@@ -1,0 +1,399 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#define N 100
+char z[20]="12345";
+char m[20]="12345";
+char room[N];
+int i=0,j,sum=0;
+int year1,year2;
+int month1,month2;
+int day1,day2;
+struct ROOM
+{
+	
+	char name[20];
+	char ID[20];
+	char tel[20];
+	char room[20];
+}ROOM[200];
+struct ROOM s1,s2;
+void menu();
+void checkin();
+void showroom();
+void changeroom();
+void search();
+void checkout();
+void deleteroom();
+int diff(int s1_year,int s1_month,int s1_day,int s2_year,int s2_month,int s2_day);
+int main()
+{
+	int times=0;
+	char username[10],password[10];
+	while(!(strcmp(password,m)==0&&strcmp(username,z)==0))
+	{
+		times++;
+		if(times>3)//输入三次退出系统
+		{
+			printf("账号或密码输入次数累计达到%d次，系统将关闭\n",times);
+			system("pause");
+			exit(1);
+		}
+		printf("账号：");
+		scanf("%s",&username);
+		printf("密码：");
+		scanf("%s",&password);
+		if(strcmp(password,m)==0&&strcmp(username,z)==0)break;
+		else printf("账号或密码错误！请重新输入\n");
+		system("pause");
+		system("cls");
+	}
+
+	while(1)
+	{
+		menu();
+	}
+	
+	system("pause");
+	return 0;	
+}
+//菜单
+void menu()
+{
+	system("cls");
+	int n;
+	printf("\t\t|-------------------宾馆客房管理系统---------------------|\n");
+	printf("\t\t|************1.录入信息            2.显示信息************|\n");
+	printf("\t\t|************3.删改信息            4.查询信息************|\n");
+	printf("\t\t|************5.退房                6.退出    ************|\n");
+	printf("\t\t|--------------------------------------------------------|\n");
+	printf("\t\t请选择：");
+	scanf("\t\t%d", &n);
+	switch (n)
+	{
+	case 1:
+		{
+		printf("\t\t--------录入信息---------\n");
+		checkin();
+		}
+		break;
+	case 2:
+		{
+		printf("\t\t--------显示信息---------\n");
+		showroom();
+		}
+		break;
+	case 3:
+		{
+			int x;
+		printf("\t\t--------删改信息---------\n");
+		printf("1.删除顾客信息。2.修改顾客信息  请选择：");
+			scanf("%d",&x);
+			switch(x)
+			{
+			case 1:
+				deleteroom();
+				break;
+			case 2:
+				changeroom();
+				break;
+			default:
+				printf("输入错误请重新输入\n");break;
+			}
+		
+		}
+		break;
+	case 4:
+		{
+		printf("\t\t--------查询信息---------\n");
+		search();
+		}
+		break;
+	case 5:
+		{
+		printf("\t\t----------退房-----------\n");
+		checkout();
+		}
+		break;
+	case 6:
+		{
+		printf("\t\t--------正常退出---------\n");
+		exit(1);
+		}
+		break;
+	default:  printf("\t\t输入错误，请重新输入\n");
+		break;
+	}
+	system("pause");
+}
+//录入顾客信息
+void checkin()
+{
+	printf("\t\t请输入姓名：");
+	scanf("%12s",ROOM[i].name);
+	printf("\t\t请输入身份证号：");
+	scanf("%120s",&ROOM[i].ID);
+	printf("\t\t请输入电话号码：");
+	scanf("%12s",ROOM[i].tel);
+	printf("\t\t请输入房间号：");
+	scanf("%12s",ROOM[i].room);
+	printf("\t\t请按年月日的顺序输入入住时间：");
+	scanf("%d %d %d",&year1,&month1,&day1);
+	printf("\t\t请输入退房时间：");
+	scanf("%d %d %d",&year2,&month2,&day2);
+	sum++;i++;
+}
+void showroom()
+{
+	printf("\t\t显示所有顾客信息:");
+	printf("\n\n");
+			 printf("\n\n\t\t|--------- --|-------------------|--------------|-----------|\n");
+		     printf("    \t\t|       姓名 |  身份证号码       |   电话号码   |  房间号   |\n");
+			 printf("    \t\t|------------|-------------------|--------------|-----------|\n");
+			 for(int i=0;i<sum;i++)
+			 {
+			 printf("\t\t %9s %12s  %12s  %10s\t\n",
+				 ROOM[i].name,ROOM[i].ID,ROOM[i].tel,ROOM[i].room);
+			 printf("\t\t|----------|--------------|--------------|-----------|\n"); 
+			 } 
+}
+void changeroom()
+{
+	int input;
+	printf("\t\t1.根据顾客姓名修改。2.根据顾客房间号修改。请选择：\n");
+	scanf("%d",&input);
+	switch(input)
+	{
+	case 1:
+		{
+	        char p[20];
+			int flag=1;
+			printf("\t\t请输入要修改的顾客姓名：");
+			scanf("\t\t%s",p);
+			for(i=0;i<sum;i++)
+		{
+			if(strcmp(ROOM[i].name,p)==0)
+			{
+				
+				printf("\t\t新顾客姓名：");
+				scanf("\t\t%s",ROOM[i].name);
+				printf("\t\t新顾客身份证号：");
+				scanf("\t\t%s",ROOM[i].ID);
+				printf("\t\t新顾客电话号码：");
+				scanf("\t\t%s",ROOM[i].tel);
+				printf("\t\t新房间号：");
+				scanf("\t\t%s",ROOM[i].room);
+				printf("\t\t新入住时间：");
+				scanf("\t\t%d%d%d",&year1,&month1,&day1);
+				printf("\t\t新退房时间：");
+				scanf("\t\t%d%d%d",&year2,&month2,&day2);
+				flag=0;
+			}
+			if(flag){printf("\t\t----------无此顾客信息-------------\n");}
+		else printf("\t\t------------修改成功---------------\n");
+		}
+		}
+		break;
+	case 2:
+		{
+			char p[20];
+			int flag=1;
+			printf("\t\t请输入要修改顾客的房间号：");
+			scanf("\t\t%s",p);
+			for(i=0;i<sum;i++)
+		{
+			if(strcmp(ROOM[i].room,p)==0)
+			{
+				
+				printf("\t\t新的顾客姓名：");
+				scanf("\t\t%s",ROOM[i].name);
+				printf("\t\t新的顾客身份证号：");
+				scanf("\t\t%s",ROOM[i].ID);
+				printf("\t\t新的顾客电话号码：");
+				scanf("\t\t%s",ROOM[i].tel);
+				printf("\t\t新的房间号：");
+				scanf("\t\t%s",ROOM[i].room);
+				printf("\t\t新的入住时间：");
+				scanf("\t\t%d%d%d",&year1,&month1,&day1);
+				printf("\t\t新的退房时间：");
+				scanf("\t\t%d%d%d",&year2,&month2,&day2);
+				flag=0;
+			}	if(flag)printf("\t\t----------无此顾客信息-------------\n");
+		else printf("\t\t------------修改成功---------------\n");
+		break;
+		}
+		}
+	default:
+		printf("输入错误！请重新输入\n");
+		break;
+	}
+}
+//查找顾客信息
+void search()
+{
+	int r;
+	printf("\t\t1.查询客户信息，2.查询空余房间。");
+	printf("请选择：");
+	scanf("%d",&r);
+	switch(r)
+	{
+	case 1:
+		{
+			int n;
+			printf("\t\t1.用名字查找。2.用房间号查找。请选择：");
+			scanf("%d",&n);
+			switch(n)
+			{
+			case 1:
+		 {
+			char p[20];
+			int flag=1;
+			printf("\t\t请输入要查找顾客的姓名：");
+			scanf("%s",p);
+			for(i=0;i<sum;i++)
+			{
+				if(strcmp(ROOM[i].name,p)==0)
+				{
+					printf("\t\t|----------|--------------|--------------|-----------|\n");
+					printf("\t\t|   姓名   |  身份证号码  |   电话号码   |  房间号   |\n");
+					printf("\t\t| %9s %12s  %12s  %10s\n",
+						ROOM[i].name,ROOM[i].ID,ROOM[i].tel,ROOM[i].room);
+					printf("\t\t|----------|--------------|--------------|-----------|\n");
+					flag=0;
+				}
+			}
+			if(flag)printf("\t\t不存在此信息！\n");
+		}
+		break;
+	case 2:
+		{
+			char p[20];
+			int flag=1;
+			printf("\t\t请输入要查找顾客的房间号：");
+			scanf("%s",p);
+			for(i=0;i<sum;i++)
+			{
+				if(strcmp(ROOM[i].room,p)==0)
+				{
+					printf("\t\t----------|--------------|--------------|--------------|\n");
+					printf("\t\t   姓名   |  身份证号码  |   电话号码   |  房间号   | \n");
+					printf("\t\t %9s| %12s  %12s  %10s\n",
+						ROOM[i].name,ROOM[i].ID,ROOM[i].tel,ROOM[i].room);
+					printf("\t\t|\----------|--------------|--------------|-----------|\n");
+					flag=0;
+				}
+			}
+			if(flag)printf("\t\t不存在此信息！\n");
+		}
+		break;
+	default:
+		printf("\t\t输入错误！请重新输入\n");
+		break;
+			}
+			break;
+	}
+			case 2:
+				{
+			 printf("\t\t----------还剩余%d间空房------------\n",N-sum);
+				}
+				break;
+	}
+}
+//退房
+void checkout()
+{	
+	int t;
+	printf("\t\t1.使用姓名退房  2.使用房间号退房");
+	scanf("\t\t%d",&t);
+	switch(t)
+	{
+	case 1:
+		{
+			int flag=1;
+			char p[20];
+			printf("\t\t请输入姓名：");
+			scanf("\t\t%s",p);
+			for(i=0;i<sum;i++)
+			{
+				if(strcmp(ROOM[i].name,p)==0)
+				{
+					for(int j=1;j<i;j++)
+					{
+						ROOM[j]=ROOM[j+1];
+						
+					}
+					sum--;flag=0;break;
+				}
+			}
+			if(flag) printf("\t\t**************没有此信息****************\n");
+			else
+			{
+				printf("\t\t您一共订了%d天时间，需支付%d元\n",
+					diff( year1,month1,day1,year2,month2,day2),100*diff( year1,month1,day1,year2,month2,day2));
+				printf("\t\t**************退房成功****************\n");
+			}
+		}
+		break;
+		case 2:
+			{
+				int flag=1;
+				char p[20];
+			printf("\t\t请输入房间号：");
+			scanf("\t\t%s",p);
+			for(i=0;i<sum;i++)
+			{
+				if(strcmp(ROOM[i].room,p)==0)
+				{
+					for(int j=1;j<i;j++)
+					{
+						ROOM[j]=ROOM[j+1];
+					}
+					flag=0;sum--;break;
+				}
+			}
+			if(flag) printf("\t\t**************没有此信息****************\n");
+			else
+			{
+				printf("\t\t您一共订了%d天时间，需支付%d元\n",
+					diff( year1,month1,day1,year2,month2,day2),100*diff( year1,month1,day1,year2,month2,day2));
+				printf("\t\t**************退房成功****************\n");
+			}
+			}
+			break;
+		default:printf("\t\t输入错误，请重新输入：\n");
+			break;
+	}
+}
+void deleteroom()
+{
+	char p[20];
+	int flag=1;
+	printf("\t\t请输入顾客姓名：");
+	scanf("%s",&p);
+	for(int i=0;i<sum;i++)
+	{
+		if(strcmp(ROOM[i].name,p)==0)
+		{
+			for(int j=i;j<sum-1;j++)
+			{
+				ROOM[j]=ROOM[j+1];
+			}
+			sum--;flag=0;
+		}
+		if(flag)printf("--------删除失败！---------\n");
+		else printf("---------删除成功！----------\n");
+	}
+}
+int diff(int s1_year,int s1_month,int s1_day,int s2_year,int s2_month,int s2_day)
+{//很巧妙的计算两个日期之间相差多少天
+	int y1,m1,d1;
+	int y2,m2,d2;
+	m1=(s1_month+9)%12;
+	y1=s1_year-m1/10;
+	d1=365*y1+y1/4-y1/100+y1/400+(m1*306+5)/10+(s1_day-1);
+	m2=(s2_month+9)%12;
+	y2=s2_year-m2/10;
+	d2=365*y2+y2/4-y2/100+y2/400+(m2*306+5)/10+(s2_day-1);
+	return (d2-d1);
+  }
+
